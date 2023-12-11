@@ -1,0 +1,158 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="SiteMES.master.cs" Inherits="MSESP.SiteMES" %>
+<%
+    //Response.Redirect("Default.aspx");
+    if ((string)(Session["TpUsuario"]) == null)
+    {
+        //Response.Redirect("https://login.microsoftonline.com/{0}/oauth2/logout?post_logout_redirect_uri=https://www.solicitudept.cl/Default");
+        Response.Redirect("https://www.solicitudept.cl");
+    }
+    
+%>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%: Page.Title %></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <webopt:BundleReference runat="server" Path="~/Content/css" /> 
+    <link href="índice.ico" rel="shortcut icon" type="image/x-icon" />
+    <script src="Scripts/js/jquery.backtotop.js" type="text/javascript"></script>
+    <script type="text/javascript" src="jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
+    <script src="jquery-ui-1.12.1.custom/jquery-ui.js" type="text/javascript"></script>
+    <link href="jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <script src="JQGridReq/jquery.jqGrid.js" type="text/javascript"></script>
+    <link href="JQGridReq/ui.jqgrid.css" rel="stylesheet" type="text/css" />
+    <script src="JQGridReq/grid.locale-en.js" type="text/javascript"></script>
+    <script src="Scripts/js/jquery.validate.js" type="text/javascript"></script>
+    <script src="Scripts/js/jquery.mask.min.js" type="text/javascript"></script>
+    <script src="Scripts/js/jquery.MultiFile.pack.js" type="text/javascript"></script>
+</head>
+<body>
+    <div class="wrapper row1">
+      <header id="header" class="clear"> 
+        <span style="display: block;float: left;margin: 125px 0px 0px 0px;position: absolute;z-index: 1;font-weight: bold;color:#FFFFFF; background-color:#92C03A;"><a href="Acceso.aspx" style="color:#FFFFFF; background-color:#92C03A;">Acceso Usuarios&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+          •&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=(string)(Session["NomProyecto"])%></span>
+        <div id="logo" class="fl_left">
+          <h1><a runat="server" href="~/"><img src="Images/LOGO_MASC_2017.png" alt="" height="12" width="20"/></a></h1>
+        </div>
+        <%if (Session["nomUsuario"] != null)
+        { 
+        %>
+        <div id="logUser" class="fl_right" style="height: 0px;margin-left: 320px;">
+            <%if ((string)(Session["TpUsuario"]) == "1")
+            { 
+            %>
+                <a title="Tickets Soporte" target="_blank" href="http://helpdesk.otecmutual.cl/LOGIN.ASP?op=4&id_usuario=<%=(string)(Session["IdUsuario"])%>" style="background:#f56517; color: #fff; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; padding: 5px 10px;">
+                <b>?</b></a>&nbsp;
+            <%
+            }
+            %>
+                <span class="loguser"><%=(string)(Session["nomUsuario"])%></span>
+                <a href="https://login.microsoftonline.com/{0}/oauth2/logout?post_logout_redirect_uri=https://www.solicitudept.cl/Default" style="color: #007092;" class="loguser" onclick="">Cerrar Sesión</a>   
+        </div>
+        <%
+        }
+            if ((string)(Session["TpUsuario"]) != "")
+        {
+        %>    
+        <nav id="mainav" class="fl_right" style="margin:47px 0 0 0;">
+          <ul class="clear">
+            <%if ((string)(Session["TpUsuario"]) == "1")
+            { 
+            %>
+            <li class="active"><a class="drop" href="#">Administración</a>
+              <ul>
+                <li><a runat="server" href="~/Usuarios">Usuarios</a></li>
+                <li><a runat="server" href="~/Empresas">Empresas</a></li>
+                <li><a runat="server" href="~/Proveedores">Proveedores</a></li>
+                <li><a runat="server" href="~/Profesionales">Profesionales</a></li>
+                <li><a runat="server" href="~/Directores">Directores</a></li>
+              </ul>
+            </li>
+            <%
+            }
+            if ((string)(Session["TpUsuario"]) == "1" || (string)(Session["TpUsuario"]) == "2" || (string)(Session["TpUsuario"]) == "3")
+            {   
+            %>
+            <li><a class="drop" href="#">Solicitudes</a>
+               <ul>
+                 <li><a runat="server" href="~/Solicitud">Agregar Solicitud</a></li>
+            <%if ((string)(Session["TpUsuario"]) == "1")
+            { 
+            %>
+                 <li><a runat="server" href="~/Ingresadas">Revisar Ingresos</a></li>
+                 <li><a runat="server" href="~/Reportes">Descargar Reportes</a></li>
+            <%
+            }
+            %>
+
+ 	        <%if ((string)(Session["TpUsuario"]) == "3")
+            { 
+            %>
+                 <li><a runat="server" href="~/AgendamientoEV">Revisión - Agendamiento</a></li>
+            <%
+            }
+            %>
+
+            <%if ((string)(Session["IDProyecto"]) == "2")
+            { 
+            %>
+                   <li><a runat="server" href="~/Graficos">Gráficos</a></li>
+            <%
+            }
+            %>
+
+                <!--<li><a runat="server" href="~/HistoricoSol">Historico Solicitudes</a></li>-->
+              </ul>
+            </li> 
+            <%
+            }
+            if((string)(Session["TpUsuario"])=="1" || (string)(Session["TpUsuario"])=="4"){   
+            %>                
+            <li><a runat="server" href="~/Actividades">Actividades</a>
+            </li>   
+            <%
+            }
+            if ((string)(Session["TpUsuario"]) == "1" || (string)(Session["TpUsuario"]) == "2")
+            {   
+            %>
+            <li>
+                <a runat="server" href="~/Revision">Revisión Documentos</a>
+            </li>        
+            <%
+            }            
+            if ((string)(Session["TpUsuario"]) == "1" || (string)(Session["TpUsuario"]) == "5" || (string)(Session["TpUsuario"]) == "3")
+            {   
+            %>      
+            <li>
+                <a runat="server" href="~/Consultas">Consultas</a>
+            </li>         
+            <%
+            }
+            %>                            
+          </ul>
+        </nav>
+        <%
+        }
+        else{Session.Abandon();}
+        %>
+      </header>
+    </div>
+
+    <div id="body" class="wrapper bgded row4" style="height: 500px;">
+    <asp:ContentPlaceHolder runat="server" ID="MainContent" />      
+    <asp:ContentPlaceHolder runat="server" ID="MainContent2" />  
+    </div>
+
+    <footer>
+            <div class="wrapper row5">
+              <div id="copyright" class="clear"> 
+                <p class="fl_left">Copyright &copy; <%: DateTime.Now.Year %> Mutual de Seguridad C.CH.C. Reservados Todos los Derechos.</p>
+              </div>
+            </div>
+    </footer>
+
+</body>
+</html>
